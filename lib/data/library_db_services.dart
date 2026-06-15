@@ -14,5 +14,12 @@ class LibraryDbServices {
     Directory documentDirectory = await getApplicationDocumentsDirectory();
     String dbPath = "${documentDirectory.path}/$_dbName";
     _database = await openDatabase(dbPath, version: 1);
+    _createAuthorTable();
+  }
+
+  static Future<void> _createAuthorTable() async {
+    return _database.execute(
+      "create table if not exists $_authorTable (id integer primary key autoincrement, name text, description text, photo blob);",
+    );
   }
 }
