@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -15,11 +16,24 @@ class LibraryDbServices {
     String dbPath = "${documentDirectory.path}/$_dbName";
     _database = await openDatabase(dbPath, version: 1);
     _createAuthorTable();
+    _insertAuthor(name: "Charlies Dickens", description: "Great Expectations");
   }
 
   static Future<void> _createAuthorTable() async {
     return _database.execute(
       "create table if not exists $_authorTable (id integer primary key autoincrement, name text, description text, photo blob);",
+    );
+  }
+
+  static Future<int> _insertAuthor({
+    required String name,
+    required String description,
+    Uint8List? photo,
+  }) {
+    // using rawInsert(), to protect sql injection
+    return _database.rawInsert(
+      'insert into author (name,description,photo) values (?,?,?)',
+      [name, description, photo],
     );
   }
 }
