@@ -15,13 +15,13 @@ class LibraryDbServices {
     Directory documentDirectory = await getApplicationDocumentsDirectory();
     String dbPath = "${documentDirectory.path}/$_dbName";
     _database = await openDatabase(dbPath, version: 1);
-    _createAuthorTable();
-    _insertAuthor(name: "Charlies Dickens", description: "Great Expectations");
+    // _createAuthorTable();
+    // _insertAuthor(name: "Charlies Dickens", description: "Great Expectations");
   }
 
   static Future<void> _createAuthorTable() async {
     return _database.execute(
-      "create table if not exists $_authorTable (id integer primary key autoincrement, name text, description text, photo blob);",
+      "create table if not exists $_authorTable (id integer primary key autoincrement, name text, description text, photo blob,fav integer);",
     );
   }
 
@@ -32,7 +32,7 @@ class LibraryDbServices {
   }) {
     // using rawInsert(), to protect sql injection
     return _database.rawInsert(
-      'insert into author (name,description,photo) values (?,?,?)',
+      'insert into author (name,description,photo,fav) values (?,?,?,?)',
       [name, description, photo],
     );
   }

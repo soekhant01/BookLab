@@ -2,7 +2,9 @@ import 'package:book_lab/const/theme/app_theme_tokens.dart';
 import 'package:flutter/material.dart';
 
 class BottomNav extends StatefulWidget {
-  const BottomNav({super.key});
+  const BottomNav({super.key, required this.onSelected});
+
+  final Function(int) onSelected;
 
   @override
   State<BottomNav> createState() => _BottomNavState();
@@ -41,6 +43,7 @@ class _BottomNavState extends State<BottomNav> {
         child: NavigationBar(
           selectedIndex: _selectedIndex,
           onDestinationSelected: (int index) {
+            widget.onSelected(index);
             setState(() {
               _selectedIndex = index;
             });
