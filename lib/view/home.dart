@@ -27,8 +27,9 @@ class _HomeState extends State<Home> {
       floatingActionButton: (_index == 0 || _index == 1)
           ? FloatingActionBtn(
               onPress: () {
-                if (_index == 0) {
+                if (_index == 1) {
                   showModalBottomSheet(
+                    isScrollControlled: true,
                     context: context,
                     builder: (context) {
                       return AddAuthorBottomSheet();
