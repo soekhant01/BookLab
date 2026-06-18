@@ -1,7 +1,9 @@
 import 'package:book_lab/const/theme/app_theme.dart';
 import 'package:book_lab/data/library_db_services.dart';
+import 'package:book_lab/provider/author_provider.dart';
 import 'package:book_lab/view/home.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,12 +16,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter BookLab',
-      theme: AppTheme.lightTheme(),
-      darkTheme: AppTheme.darkTheme(),
-      home: Home(),
+    return MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => AuthorProvider())],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter BookLab',
+        theme: AppTheme.lightTheme(),
+        darkTheme: AppTheme.darkTheme(),
+        home: Home(),
+      ),
     );
   }
 }

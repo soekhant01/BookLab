@@ -15,8 +15,7 @@ class LibraryDbServices {
     Directory documentDirectory = await getApplicationDocumentsDirectory();
     String dbPath = "${documentDirectory.path}/$_dbName";
     _database = await openDatabase(dbPath, version: 1);
-    // _createAuthorTable();
-    // _insertAuthor(name: "Charlies Dickens", description: "Great Expectations");
+    _createAuthorTable();
   }
 
   static Future<void> _createAuthorTable() async {
@@ -25,7 +24,7 @@ class LibraryDbServices {
     );
   }
 
-  static Future<int> _insertAuthor({
+  Future<int> insertAuthor({
     required String name,
     required String description,
     Uint8List? photo,

@@ -1,6 +1,8 @@
 import 'package:book_lab/const/theme/app_theme_tokens.dart';
+import 'package:book_lab/provider/author_provider.dart';
 import 'package:book_lab/view/widgets/input_field_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AddAuthorBottomSheet extends StatefulWidget {
   const AddAuthorBottomSheet({super.key});
@@ -18,6 +20,10 @@ class _AddAuthorBottomSheetState extends State<AddAuthorBottomSheet> {
     AppThemeTokens appThemeTokens = Theme.of(
       context,
     ).extension<AppThemeTokens>()!;
+    AuthorProvider authorProvider = Provider.of<AuthorProvider>(
+      context,
+      listen: false,
+    );
     return Container(
       height: MediaQuery.of(context).size.height * 0.8,
       decoration: BoxDecoration(
@@ -74,6 +80,68 @@ class _AddAuthorBottomSheetState extends State<AddAuthorBottomSheet> {
           ),
 
           TextButton(onPressed: () {}, child: Text("Upload Photo")),
+
+          InkWell(
+            onTap: () async {
+              String name = _nameController.text.trim();
+              String desc = _descriptionController.text.trim();
+              if (name.isNotEmpty && desc.isNotEmpty) {
+                int result = await authorProvider.saveAuthor(
+                  name: name,
+                  description: desc,
+                );
+
+                if (result > 0 && context.mounted) {
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: Colors.green,
+                      content: Text("Save Successfully"),
+                    ),
+                  );
+                }
+              } else {
+                showDialog(
+                  context: context,
+                  builder: (_) {
+                    return AlertDialog(
+                      title: Text("Data not complete"),
+                      content: Text(
+                        "Please enter name and description correctly",
+                      ),
+                      actions: [
+                        FilledButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text("OK"),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 16),
+              alignment: Alignment.center,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [appThemeTokens.primary, appThemeTokens.secondary],
+                ),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Text(
+                "Save Author",
+                style: TextStyle(
+                  color: appThemeTokens.onPrimary,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );

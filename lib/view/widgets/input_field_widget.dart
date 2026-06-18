@@ -34,6 +34,7 @@ class InputFieldWidget extends StatelessWidget {
         SizedBox(height: 8.0),
 
         TextField(
+          controller: controller,
           maxLines: maxLines,
           decoration: InputDecoration(
             hintText: hintName,
