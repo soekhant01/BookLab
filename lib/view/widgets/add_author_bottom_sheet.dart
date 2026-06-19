@@ -98,7 +98,11 @@ class _AddAuthorBottomSheetState extends State<AddAuthorBottomSheet> {
           SizedBox(height: 4.0),
 
           if (_photo != null)
-            Center(child: Image.memory(_photo!, width: 200, height: 200)),
+            Expanded(
+              child: Center(
+                child: Image.memory(_photo!, width: 200, height: 200),
+              ),
+            ),
 
           if (_photo != null) SizedBox(height: 8.0),
 
