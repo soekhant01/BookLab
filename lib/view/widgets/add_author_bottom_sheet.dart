@@ -1,7 +1,10 @@
+import 'dart:typed_data';
+
 import 'package:book_lab/const/theme/app_theme_tokens.dart';
 import 'package:book_lab/provider/author_provider.dart';
 import 'package:book_lab/view/widgets/input_field_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class AddAuthorBottomSheet extends StatefulWidget {
@@ -14,6 +17,7 @@ class AddAuthorBottomSheet extends StatefulWidget {
 class _AddAuthorBottomSheetState extends State<AddAuthorBottomSheet> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+  Uint8List? _photo; // to save byte why use Uint8List
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +43,7 @@ class _AddAuthorBottomSheetState extends State<AddAuthorBottomSheet> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Insert Box Record",
+                "Insert Author Record",
                 style: TextStyle(
                   fontSize: 20,
                   color: appThemeTokens.onBackground,
@@ -79,7 +83,24 @@ class _AddAuthorBottomSheetState extends State<AddAuthorBottomSheet> {
             ),
           ),
 
-          TextButton(onPressed: () {}, child: Text("Upload Photo")),
+          TextButton(
+            onPressed: () async {
+              ImagePicker picker = ImagePicker();
+              XFile? file = await picker.pickImage(source: ImageSource.gallery);
+              _photo = await file
+                  ?.readAsBytes(); // readAsBytes() is async so we need await
+              if (_photo != null) {
+                setState(() {});
+              }
+            },
+            child: Text("Upload Photo"),
+          ),
+          SizedBox(height: 4.0),
+
+          if (_photo != null)
+            Center(child: Image.memory(_photo!, width: 200, height: 200)),
+
+          if (_photo != null) SizedBox(height: 8.0),
 
           InkWell(
             onTap: () async {
@@ -89,6 +110,7 @@ class _AddAuthorBottomSheetState extends State<AddAuthorBottomSheet> {
                 int result = await authorProvider.saveAuthor(
                   name: name,
                   description: desc,
+                  photo: _photo,
                 );
 
                 if (result > 0 && context.mounted) {
