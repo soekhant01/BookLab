@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 
 class AuthorProvider extends ChangeNotifier {
   final LibraryDbServices _dbServices = LibraryDbServices();
+  int isFav = 0;
   List<AuthorModel> authors = [];
 
   void getAllAuthors() async {
@@ -23,5 +24,17 @@ class AuthorProvider extends ChangeNotifier {
     );
     getAllAuthors();
     return count;
+  }
+
+  Future<int> updateFavorite(int id, int isFav) async {
+    final result = await _dbServices.updateFavorite(id, isFav);
+    getFavorite(id);
+    return result;
+  }
+
+  Future<int> getFavorite(int id) async {
+    isFav = await _dbServices.getFavorite(id);
+    notifyListeners();
+    return isFav;
   }
 }

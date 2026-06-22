@@ -43,4 +43,18 @@ class LibraryDbServices {
       return AuthorModel.fromJson(json);
     }).toList();
   }
+
+  Future<int> getFavorite(int id) async {
+    final favMap = await _database.rawQuery(
+      "select fav from author where id = $id",
+    );
+    if (favMap.isNotEmpty) {
+      return (favMap.first["fav"] as int ?? 0);
+    }
+    return 0;
+  }
+
+  Future<int> updateFavorite(int id, int isFav) async {
+    return _database.rawUpdate("update author set fav=$isFav where id=$id");
+  }
 }

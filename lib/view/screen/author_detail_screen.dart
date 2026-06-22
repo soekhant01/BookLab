@@ -2,7 +2,9 @@ import 'dart:typed_data';
 
 import 'package:book_lab/const/theme/app_theme_tokens.dart';
 import 'package:book_lab/data/author_model.dart';
+import 'package:book_lab/provider/author_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AuthorDetailScreen extends StatefulWidget {
   const AuthorDetailScreen({super.key, required this.authorData});
@@ -14,6 +16,19 @@ class AuthorDetailScreen extends StatefulWidget {
 }
 
 class _AuthorDetailScreenState extends State<AuthorDetailScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      Provider.of<AuthorProvider>(
+        context,
+        listen: false,
+      ).getFavorite(widget.authorData.id);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     AppThemeTokens themeTokens = Theme.of(context).extension<AppThemeTokens>()!;
@@ -52,6 +67,35 @@ class _AuthorDetailScreenState extends State<AuthorDetailScreen> {
                   Navigator.pop(context);
                 },
                 icon: Icon(Icons.arrow_back),
+              ),
+            ),
+          ),
+
+          Positioned(
+            top: 50,
+            right: 30,
+            child: Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                color: themeTokens.backBtnBg,
+                borderRadius: BorderRadius.circular(24),
+              ),
+              child: Consumer<AuthorProvider>(
+                builder: (BuildContext context, provider, Widget? child) {
+                  bool isFav = provider.isFav == 1;
+                  return IconButton(
+                    onPressed: () {
+                      provider.updateFavorite(
+                        widget.authorData.id,
+                        isFav ? 0 : 1,
+                      );
+                    },
+                    icon: isFav
+                        ? Icon(Icons.favorite)
+                        : Icon(Icons.favorite_border),
+                  );
+                },
               ),
             ),
           ),
