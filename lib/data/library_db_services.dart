@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:book_lab/data/author_model.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -36,7 +37,10 @@ class LibraryDbServices {
     );
   }
 
-  Future<List<Map<String, dynamic>>> getAllAuthors() {
-    return _database.rawQuery("select * from $_authorTable");
+  Future<List<AuthorModel>> getAllAuthors() async {
+    final listOfMap = await _database.rawQuery("select * from $_authorTable");
+    return listOfMap.map((json) {
+      return AuthorModel.fromJson(json);
+    }).toList();
   }
 }

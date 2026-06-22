@@ -1,9 +1,10 @@
+import 'package:book_lab/data/author_model.dart';
 import 'package:book_lab/data/library_db_services.dart';
 import 'package:flutter/foundation.dart';
 
 class AuthorProvider extends ChangeNotifier {
   final LibraryDbServices _dbServices = LibraryDbServices();
-  List<Map<String, dynamic>> authors = [];
+  List<AuthorModel> authors = [];
 
   void getAllAuthors() async {
     authors = await _dbServices.getAllAuthors();
