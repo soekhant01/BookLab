@@ -37,4 +37,10 @@ class AuthorProvider extends ChangeNotifier {
     notifyListeners();
     return isFav;
   }
+
+  Future<int> deleteAuthor(int id) async {
+    int result = await _dbServices.deleteAuthor(id);
+    getAllAuthors();
+    return result;
+  }
 }

@@ -46,7 +46,7 @@ class LibraryDbServices {
 
   Future<int> getFavorite(int id) async {
     final favMap = await _database.rawQuery(
-      "select fav from author where id = $id",
+      "select fav from $_authorTable where id = $id",
     );
     if (favMap.isNotEmpty) {
       return (favMap.first["fav"] as int ?? 0);
@@ -55,6 +55,12 @@ class LibraryDbServices {
   }
 
   Future<int> updateFavorite(int id, int isFav) async {
-    return _database.rawUpdate("update author set fav=$isFav where id=$id");
+    return _database.rawUpdate(
+      "update $_authorTable set fav=$isFav where id=$id",
+    );
+  }
+
+  Future<int> deleteAuthor(int id) {
+    return _database.rawDelete("delete from $_authorTable where id=$id");
   }
 }

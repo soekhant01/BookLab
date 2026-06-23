@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:book_lab/data/author_model.dart';
 import 'package:book_lab/provider/author_provider.dart';
 import 'package:book_lab/view/screen/author_detail_screen.dart';
+import 'package:book_lab/view/widgets/delete_confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -104,7 +105,21 @@ class _AuthorPageState extends State<AuthorPage> {
                         children: [
                           IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              bool isDelete = await showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return DeleteConfirmDialog(
+                                    title: "Delete Author",
+                                    content:
+                                        "Are You Sure To Delete ${author.name}",
+                                  );
+                                },
+                              );
+                              if (isDelete && context.mounted) {
+                                provider.deleteAuthor(author.id);
+                              }
+                            },
                             icon: Icon(Icons.delete),
                           ),
                         ],
