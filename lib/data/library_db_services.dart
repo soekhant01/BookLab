@@ -49,7 +49,7 @@ class LibraryDbServices {
       "select fav from $_authorTable where id = $id",
     );
     if (favMap.isNotEmpty) {
-      return (favMap.first["fav"] as int ?? 0);
+      return (favMap.first["fav"] as int);
     }
     return 0;
   }
@@ -62,5 +62,18 @@ class LibraryDbServices {
 
   Future<int> deleteAuthor(int id) {
     return _database.rawDelete("delete from $_authorTable where id=$id");
+  }
+
+  Future<int> updateAuthor({
+    required int id,
+    required String name,
+    required String description,
+  }) {
+    return _database.update(
+      _authorTable,
+      {"name": name, "description": description},
+      where: 'id = ?',
+      whereArgs: [id],
+    );
   }
 }
