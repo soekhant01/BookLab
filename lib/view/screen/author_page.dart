@@ -39,113 +39,135 @@ class _AuthorPageState extends State<AuthorPage> {
       child: Consumer<AuthorProvider>(
         builder: (_, provider, _) {
           List<AuthorModel> authors = provider.authors;
-          return ListView.builder(
-            itemCount: authors.length,
-            itemBuilder: (context, position) {
-              AuthorModel author = authors[position];
-              Uint8List? photo = author.photo;
-              String name = author.name;
-              String description = author.description;
-
-              return InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) {
-                        return AuthorDetailScreen(authorData: author);
-                      },
-                    ),
-                  );
-                },
-                child: Container(
-                  padding: EdgeInsets.all(16),
-                  margin: EdgeInsets.only(bottom: 16, left: 16, right: 16),
-                  decoration: BoxDecoration(
-                    color: appThemeTokens.surface,
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  child: Row(
+          return authors.isEmpty
+              ? Container(
+                  decoration: BoxDecoration(color: appThemeTokens.surface),
+                  width: double.infinity,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      if (photo != null)
-                        CircleAvatar(
-                          radius: 40,
-                          backgroundColor: Colors.transparent,
-                          backgroundImage: MemoryImage(photo),
+                      Text(
+                        "Empty Authors",
+                        style: TextStyle(
+                          fontSize: 36,
+                          fontWeight: FontWeight.bold,
                         ),
-                      SizedBox(width: 8),
+                      ),
+                    ],
+                  ),
+                )
+              : ListView.builder(
+                  itemCount: authors.length,
+                  itemBuilder: (context, position) {
+                    AuthorModel author = authors[position];
+                    Uint8List? photo = author.photo;
+                    String name = author.name;
+                    String description = author.description;
 
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) {
+                              return AuthorDetailScreen(authorData: author);
+                            },
+                          ),
+                        );
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(16),
+                        margin: EdgeInsets.only(
+                          bottom: 16,
+                          left: 16,
+                          right: 16,
+                        ),
+                        decoration: BoxDecoration(
+                          color: appThemeTokens.surface,
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                        child: Row(
                           children: [
-                            Text(
-                              name,
-                              style: TextStyle(
-                                fontSize: 17,
-                                color: appThemeTokens.onBackground,
-                                fontWeight: FontWeight.w600,
+                            if (photo != null)
+                              CircleAvatar(
+                                radius: 40,
+                                backgroundColor: Colors.transparent,
+                                backgroundImage: MemoryImage(photo),
+                              ),
+                            SizedBox(width: 8),
+
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    name,
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                      color: appThemeTokens.onBackground,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  Text(
+                                    description,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: appThemeTokens.textSecondary,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            Text(
-                              description,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: appThemeTokens.textSecondary,
-                                fontWeight: FontWeight.w600,
-                              ),
+                            SizedBox(width: 8),
+
+                            Column(
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    showModalBottomSheet(
+                                      isScrollControlled: true,
+                                      context: context,
+                                      builder: (context) {
+                                        return UpdateAuthorBottomSheet(
+                                          currentAuthorName: name,
+                                          currentDescription: description,
+                                          currentAuthorId: author.id,
+                                        );
+                                      },
+                                    );
+                                  },
+                                  icon: Icon(Icons.edit),
+                                ),
+                                IconButton(
+                                  onPressed: () async {
+                                    bool isDelete = await showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return DeleteConfirmDialog(
+                                          title: "Delete Author",
+                                          content:
+                                              "Are You Sure To Delete ${author.name}",
+                                        );
+                                      },
+                                    );
+                                    if (isDelete && context.mounted) {
+                                      provider.deleteAuthor(author.id);
+                                    }
+                                  },
+                                  icon: Icon(Icons.delete),
+                                ),
+                              ],
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(width: 8),
-
-                      Column(
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              showModalBottomSheet(
-                                isScrollControlled: true,
-                                context: context,
-                                builder: (context) {
-                                  return UpdateAuthorBottomSheet(
-                                    currentAuthorName: name,
-                                    currentDescription: description,
-                                    currentAuthorId: author.id,
-                                  );
-                                },
-                              );
-                            },
-                            icon: Icon(Icons.edit),
-                          ),
-                          IconButton(
-                            onPressed: () async {
-                              bool isDelete = await showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return DeleteConfirmDialog(
-                                    title: "Delete Author",
-                                    content:
-                                        "Are You Sure To Delete ${author.name}",
-                                  );
-                                },
-                              );
-                              if (isDelete && context.mounted) {
-                                provider.deleteAuthor(author.id);
-                              }
-                            },
-                            icon: Icon(Icons.delete),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          );
+                    );
+                  },
+                );
         },
       ),
     );
