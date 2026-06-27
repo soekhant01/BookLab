@@ -40,8 +40,7 @@ class _AuthorPageState extends State<AuthorPage> {
         builder: (_, provider, _) {
           List<AuthorModel> authors = provider.authors;
           return authors.isEmpty
-              ? Container(
-                  decoration: BoxDecoration(color: appThemeTokens.surface),
+              ? SizedBox(
                   width: double.infinity,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
