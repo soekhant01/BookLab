@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:book_lab/data/library_db_services.dart';
+import 'package:book_lab/data/model/book_model.dart';
 
 class BookDbServices {
   static final _bookTable = "books";
@@ -33,10 +34,12 @@ foreign key(author_id) references author(id) on delete restrict
     );
   }
 
-  Future<List<Map>> getAllBooks() async {
+  Future<List<BookModel>> getAllBooks() async {
     final listOfBooks = await _database.rawQuery(
-      'select b.*, a.name From $_bookTable join author a on a.id=b.author_id',
+      'select b.*, a.name From books b join author a on a.id=b.author_id',
     );
-    return listOfBooks;
+    return listOfBooks.map((json) {
+      return BookModel.fromJson(json);
+    }).toList();
   }
 }

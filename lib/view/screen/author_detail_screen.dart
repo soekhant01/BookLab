@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:book_lab/const/theme/app_theme_tokens.dart';
-import 'package:book_lab/data/author_model.dart';
+import 'package:book_lab/data/model/author_model.dart';
 import 'package:book_lab/provider/author_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

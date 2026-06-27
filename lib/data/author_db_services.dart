@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:book_lab/data/library_db_services.dart';
 
-import 'author_model.dart';
+import 'model/author_model.dart';
 
 class AuthorDbServices {
   static final _authorTable = "author";

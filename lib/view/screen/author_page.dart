@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:book_lab/data/author_model.dart';
+import 'package:book_lab/data/model/author_model.dart';
 import 'package:book_lab/provider/author_provider.dart';
 import 'package:book_lab/view/screen/author_detail_screen.dart';
 import 'package:book_lab/view/widgets/delete_confirm_dialog.dart';

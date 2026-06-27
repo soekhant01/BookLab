@@ -1,5 +1,5 @@
 import 'package:book_lab/data/author_db_services.dart';
-import 'package:book_lab/data/author_model.dart';
+import 'package:book_lab/data/model/author_model.dart';
 import 'package:flutter/foundation.dart';
 
 class AuthorProvider extends ChangeNotifier {

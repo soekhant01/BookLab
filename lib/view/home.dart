@@ -1,4 +1,5 @@
 import 'package:book_lab/view/screen/author_page.dart';
+import 'package:book_lab/view/screen/book_page.dart';
 import 'package:book_lab/view/widgets/add_author_bottom_sheet.dart';
 import 'package:book_lab/view/widgets/bottom_nav.dart';
 import 'package:book_lab/view/widgets/floating_action_btn.dart';
@@ -40,6 +41,7 @@ class _HomeState extends State<Home> {
             )
           : null,
       body: switch (_index) {
+        0 => BookPage(),
         1 => AuthorPage(),
         _ => SizedBox(),
       },
