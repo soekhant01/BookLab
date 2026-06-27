@@ -14,7 +14,13 @@ class LibraryDbServices {
   static Future<void> createDatabase() async {
     Directory documentDirectory = await getApplicationDocumentsDirectory();
     String dbPath = "${documentDirectory.path}/$_dbName";
-    _database = await openDatabase(dbPath, version: 1);
+    _database = await openDatabase(
+      dbPath,
+      version: 1,
+      onConfigure: (db) {
+        db.execute("pragma foreign_keys = on;");
+      },
+    );
     AuthorDbServices.createAuthorTable();
   }
 }
