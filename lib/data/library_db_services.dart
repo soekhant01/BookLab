@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:book_lab/data/author_db_services.dart';
+import 'package:book_lab/data/book_db_services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -22,5 +23,6 @@ class LibraryDbServices {
       },
     );
     AuthorDbServices.createAuthorTable();
+    BookDbServices.createBookTable();
   }
 }

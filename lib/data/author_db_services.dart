@@ -6,10 +6,10 @@ import 'author_model.dart';
 
 class AuthorDbServices {
   static final _authorTable = "author";
-  static final database = LibraryDbServices.database;
+  static final _database = LibraryDbServices.database;
 
   static Future<void> createAuthorTable() async {
-    return database.execute(
+    return _database.execute(
       "create table if not exists $_authorTable (id integer primary key autoincrement, name text, description text, photo blob,fav integer);",
     );
   }
@@ -20,21 +20,21 @@ class AuthorDbServices {
     Uint8List? photo,
   }) {
     // using rawInsert(), to protect sql injection
-    return database.rawInsert(
+    return _database.rawInsert(
       'insert into author (name,description,photo,fav) values (?,?,?,?)',
       [name, description, photo, null],
     );
   }
 
   Future<List<AuthorModel>> getAllAuthors() async {
-    final listOfMap = await database.rawQuery("select * from $_authorTable");
+    final listOfMap = await _database.rawQuery("select * from $_authorTable");
     return listOfMap.map((json) {
       return AuthorModel.fromJson(json);
     }).toList();
   }
 
   Future<int> getFavorite(int id) async {
-    final favMap = await database.rawQuery(
+    final favMap = await _database.rawQuery(
       "select fav from $_authorTable where id = $id",
     );
     if (favMap.isNotEmpty) {
@@ -44,13 +44,13 @@ class AuthorDbServices {
   }
 
   Future<int> updateFavorite(int id, int isFav) async {
-    return database.rawUpdate(
+    return _database.rawUpdate(
       "update $_authorTable set fav=$isFav where id=$id",
     );
   }
 
   Future<int> deleteAuthor(int id) {
-    return database.rawDelete("delete from $_authorTable where id=$id");
+    return _database.rawDelete("delete from $_authorTable where id=$id");
   }
 
   Future<int> updateAuthor({
@@ -58,7 +58,7 @@ class AuthorDbServices {
     required String name,
     required String description,
   }) {
-    return database.update(
+    return _database.update(
       _authorTable,
       {"name": name, "description": description},
       where: 'id = ?',
