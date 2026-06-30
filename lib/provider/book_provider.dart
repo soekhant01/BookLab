@@ -6,6 +6,5 @@ class BookProvider extends ChangeNotifier {
 
   void getAllBooks() async {
     final books = await _bookDbServices.getAllBooks();
-    print(books);
   }
 }

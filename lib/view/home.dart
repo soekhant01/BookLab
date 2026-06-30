@@ -1,6 +1,6 @@
 import 'package:book_lab/view/screen/author_page.dart';
 import 'package:book_lab/view/screen/book_page.dart';
-import 'package:book_lab/view/widgets/add_author_bottom_sheet.dart';
+import 'package:book_lab/view/widgets/add_bottom_sheet.dart';
 import 'package:book_lab/view/widgets/bottom_nav.dart';
 import 'package:book_lab/view/widgets/floating_action_btn.dart';
 import 'package:flutter/material.dart';
@@ -28,15 +28,33 @@ class _HomeState extends State<Home> {
       floatingActionButton: (_index == 0 || _index == 1)
           ? FloatingActionBtn(
               onPress: () {
-                if (_index == 1) {
-                  showModalBottomSheet(
-                    isScrollControlled: true,
-                    context: context,
-                    builder: (context) {
-                      return AddAuthorBottomSheet();
-                    },
-                  );
-                }
+                showModalBottomSheet(
+                  isScrollControlled: true,
+                  context: context,
+                  builder: (context) {
+                    return _index == 0
+                        ? AddBottomSheet(
+                            bottomSheetTitle: 'Insert Book Record',
+                            name: 'Book Name',
+                            description: 'Description',
+                            photoText: 'Book Cover (optional)',
+                            nameHintText: 'Enter Book Name',
+                            descHintText: 'Enter Description',
+                            buttonText: 'Save Book',
+                            isBookSeet: true,
+                          )
+                        : AddBottomSheet(
+                            bottomSheetTitle: 'Insert Author Record',
+                            name: 'Author Name',
+                            description: 'Description',
+                            photoText: 'Author Photo (optional)',
+                            nameHintText: 'Enter Author Name',
+                            descHintText: 'Enter Description',
+                            buttonText: 'Save Author',
+                            isBookSeet: false,
+                          );
+                  },
+                );
               },
             )
           : null,

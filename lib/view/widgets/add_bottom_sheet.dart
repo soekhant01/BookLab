@@ -2,19 +2,39 @@ import 'dart:typed_data';
 
 import 'package:book_lab/const/theme/app_theme_tokens.dart';
 import 'package:book_lab/provider/author_provider.dart';
+import 'package:book_lab/view/widgets/author_dropdown.dart';
 import 'package:book_lab/view/widgets/input_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-class AddAuthorBottomSheet extends StatefulWidget {
-  const AddAuthorBottomSheet({super.key});
+class AddBottomSheet extends StatefulWidget {
+  const AddBottomSheet({
+    super.key,
+    required this.bottomSheetTitle,
+    required this.name,
+    required this.description,
+    required this.photoText,
+    required this.nameHintText,
+    required this.descHintText,
+    required this.buttonText,
+    required this.isBookSeet,
+  });
+
+  final String bottomSheetTitle;
+  final String name;
+  final String description;
+  final String photoText;
+  final String nameHintText;
+  final String descHintText;
+  final String buttonText;
+  final bool isBookSeet;
 
   @override
-  State<AddAuthorBottomSheet> createState() => _AddAuthorBottomSheetState();
+  State<AddBottomSheet> createState() => _AddBottomSheetState();
 }
 
-class _AddAuthorBottomSheetState extends State<AddAuthorBottomSheet> {
+class _AddBottomSheetState extends State<AddBottomSheet> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   Uint8List? _photo; // to save byte why use Uint8List
@@ -43,7 +63,7 @@ class _AddAuthorBottomSheetState extends State<AddAuthorBottomSheet> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Insert Author Record",
+                widget.bottomSheetTitle,
                 style: TextStyle(
                   fontSize: 20,
                   color: appThemeTokens.onBackground,
@@ -61,22 +81,25 @@ class _AddAuthorBottomSheetState extends State<AddAuthorBottomSheet> {
           ),
 
           InputFieldWidget(
-            title: 'Author Name',
-            hintName: 'Enter Author Name',
+            title: widget.name,
+            hintName: widget.nameHintText,
             controller: _nameController,
             maxLines: 1,
           ),
 
           SizedBox(height: 16.0),
           InputFieldWidget(
-            title: 'Description',
-            hintName: 'Enter Description',
+            title: widget.description,
+            hintName: widget.descHintText,
             controller: _descriptionController,
             maxLines: 5,
           ),
+
+          if (widget.isBookSeet) AuthorDropdown(),
+
           SizedBox(height: 16.0),
           Text(
-            "Author Photo (optional)",
+            widget.photoText,
             style: TextStyle(
               color: appThemeTokens.textSecondary,
               fontWeight: FontWeight.w500,
@@ -159,7 +182,7 @@ class _AddAuthorBottomSheetState extends State<AddAuthorBottomSheet> {
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Text(
-                "Save Author",
+                widget.buttonText,
                 style: TextStyle(
                   color: appThemeTokens.onPrimary,
                   fontSize: 16,

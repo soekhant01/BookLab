@@ -1,20 +1,13 @@
-/// id : 1
-/// title : " War & Peace"
-/// description : "Best selling book"
-/// cover : null
-/// fav : null
-/// author_id : 4
-/// name : "Leo_Tolstoy"
-
 class BookModel {
   BookModel({
-      num? id, 
-      String? title, 
-      String? description, 
-      dynamic cover, 
-      dynamic fav, 
-      num? authorId, 
-      String? name,}){
+    num? id,
+    String? title,
+    String? description,
+    dynamic cover,
+    dynamic fav,
+    num? authorId,
+    String? name,
+  }) {
     _id = id;
     _title = title;
     _description = description;
@@ -22,7 +15,7 @@ class BookModel {
     _fav = fav;
     _authorId = authorId;
     _name = name;
-}
+  }
 
   BookModel.fromJson(dynamic json) {
     _id = json['id'];
@@ -33,6 +26,7 @@ class BookModel {
     _authorId = json['author_id'];
     _name = json['name'];
   }
+
   num? _id;
   String? _title;
   String? _description;
@@ -40,27 +34,37 @@ class BookModel {
   dynamic _fav;
   num? _authorId;
   String? _name;
-BookModel copyWith({  num? id,
-  String? title,
-  String? description,
-  dynamic cover,
-  dynamic fav,
-  num? authorId,
-  String? name,
-}) => BookModel(  id: id ?? _id,
-  title: title ?? _title,
-  description: description ?? _description,
-  cover: cover ?? _cover,
-  fav: fav ?? _fav,
-  authorId: authorId ?? _authorId,
-  name: name ?? _name,
-);
+
+  BookModel copyWith({
+    num? id,
+    String? title,
+    String? description,
+    dynamic cover,
+    dynamic fav,
+    num? authorId,
+    String? name,
+  }) => BookModel(
+    id: id ?? _id,
+    title: title ?? _title,
+    description: description ?? _description,
+    cover: cover ?? _cover,
+    fav: fav ?? _fav,
+    authorId: authorId ?? _authorId,
+    name: name ?? _name,
+  );
+
   num? get id => _id;
+
   String? get title => _title;
+
   String? get description => _description;
+
   dynamic get cover => _cover;
+
   dynamic get fav => _fav;
+
   num? get authorId => _authorId;
+
   String? get name => _name;
 
   Map<String, dynamic> toJson() {
@@ -74,5 +78,4 @@ BookModel copyWith({  num? id,
     map['name'] = _name;
     return map;
   }
-
 }

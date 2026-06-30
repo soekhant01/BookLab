@@ -22,7 +22,7 @@ class _AuthorPageState extends State<AuthorPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // following will work after all widget ready
+    // will work after all widget ready
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       Provider.of<AuthorProvider>(context, listen: false).getAllAuthors();
