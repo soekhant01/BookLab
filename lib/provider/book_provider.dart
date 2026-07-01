@@ -1,11 +1,14 @@
 import 'package:book_lab/data/book_db_services.dart';
+import 'package:book_lab/data/model/book_model.dart';
 import 'package:flutter/foundation.dart';
 
 class BookProvider extends ChangeNotifier {
   final BookDbServices _bookDbServices = BookDbServices();
+  List<BookModel> books = [];
 
   void getAllBooks() async {
-    final books = await _bookDbServices.getAllBooks();
+    books = await _bookDbServices.getAllBooks();
+    notifyListeners();
   }
 
   Future<int> saveBook({
@@ -20,6 +23,7 @@ class BookProvider extends ChangeNotifier {
       authorId: authorId,
       cover: cover,
     );
+    getAllBooks();
     return count;
   }
 }
