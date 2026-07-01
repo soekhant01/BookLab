@@ -34,20 +34,10 @@ class _BookPageState extends State<BookPage> {
         builder: (_, provider, _) {
           List<BookModel> books = provider.books;
           return books.isEmpty
-              ? SizedBox(
-                  width: double.infinity,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Empty Books",
-                        style: TextStyle(
-                          fontSize: 36,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
+              ? Center(
+                  child: Text(
+                    "Empty Books",
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                 )
               : ListView.builder(

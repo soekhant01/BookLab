@@ -40,20 +40,10 @@ class _AuthorPageState extends State<AuthorPage> {
         builder: (_, provider, _) {
           List<AuthorModel> authors = provider.authors;
           return authors.isEmpty
-              ? SizedBox(
-                  width: double.infinity,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Empty Authors",
-                        style: TextStyle(
-                          fontSize: 36,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
+              ? Center(
+                  child: Text(
+                    "Empty Authors",
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                 )
               : ListView.builder(
