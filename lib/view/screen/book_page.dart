@@ -56,7 +56,7 @@ class _BookPageState extends State<BookPage> {
                     BookModel book = books[index];
                     Uint8List? cover = book.cover;
                     String? title = book.title;
-                    String? description = book.description;
+                    String? name = book.name;
                     return InkWell(
                       onTap: () {},
                       child: Container(
@@ -73,11 +73,18 @@ class _BookPageState extends State<BookPage> {
                         child: Row(
                           children: [
                             if (cover != null)
-                              CircleAvatar(
-                                radius: 40,
-                                backgroundColor: Colors.transparent,
-                                backgroundImage: MemoryImage(cover),
+                              Container(
+                                width: 80,
+                                height: 100,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  image: DecorationImage(
+                                    image: MemoryImage(cover),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                               ),
+
                             SizedBox(width: 8),
 
                             Expanded(
@@ -92,8 +99,9 @@ class _BookPageState extends State<BookPage> {
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
+                                  SizedBox(height: 8),
                                   Text(
-                                    "$description",
+                                    " Author: $name",
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
