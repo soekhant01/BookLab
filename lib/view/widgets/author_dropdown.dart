@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AuthorDropdown extends StatefulWidget {
-  const AuthorDropdown({super.key});
+  const AuthorDropdown({super.key, required this.onAuthorSelected});
+
+  final Function(int) onAuthorSelected;
 
   @override
   State<AuthorDropdown> createState() => _AuthorDropdownState();
@@ -27,7 +29,11 @@ class _AuthorDropdownState extends State<AuthorDropdown> {
               );
             }).toList(),
             label: const Text("Select Author"),
-            onSelected: (value) {},
+            onSelected: (value) {
+              setState(() {
+                widget.onAuthorSelected(value!);
+              });
+            },
           ),
         );
       },

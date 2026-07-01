@@ -7,4 +7,19 @@ class BookProvider extends ChangeNotifier {
   void getAllBooks() async {
     final books = await _bookDbServices.getAllBooks();
   }
+
+  Future<int> saveBook({
+    required String title,
+    required String description,
+    required int authorId,
+    Uint8List? cover,
+  }) async {
+    final count = await _bookDbServices.insertAuthor(
+      title: title,
+      description: description,
+      authorId: authorId,
+      cover: cover,
+    );
+    return count;
+  }
 }

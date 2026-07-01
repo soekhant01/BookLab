@@ -41,7 +41,7 @@ class _HomeState extends State<Home> {
                             nameHintText: 'Enter Book Name',
                             descHintText: 'Enter Description',
                             buttonText: 'Save Book',
-                            isBookSeet: true,
+                            isBookSheet: true,
                           )
                         : AddBottomSheet(
                             bottomSheetTitle: 'Insert Author Record',
@@ -51,7 +51,7 @@ class _HomeState extends State<Home> {
                             nameHintText: 'Enter Author Name',
                             descHintText: 'Enter Description',
                             buttonText: 'Save Author',
-                            isBookSeet: false,
+                            isBookSheet: false,
                           );
                   },
                 );

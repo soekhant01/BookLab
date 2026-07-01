@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:book_lab/const/theme/app_theme_tokens.dart';
 import 'package:book_lab/provider/author_provider.dart';
+import 'package:book_lab/provider/book_provider.dart';
 import 'package:book_lab/view/widgets/author_dropdown.dart';
 import 'package:book_lab/view/widgets/input_field_widget.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class AddBottomSheet extends StatefulWidget {
     required this.nameHintText,
     required this.descHintText,
     required this.buttonText,
-    required this.isBookSeet,
+    required this.isBookSheet,
   });
 
   final String bottomSheetTitle;
@@ -28,7 +29,7 @@ class AddBottomSheet extends StatefulWidget {
   final String nameHintText;
   final String descHintText;
   final String buttonText;
-  final bool isBookSeet;
+  final bool isBookSheet;
 
   @override
   State<AddBottomSheet> createState() => _AddBottomSheetState();
@@ -38,6 +39,7 @@ class _AddBottomSheetState extends State<AddBottomSheet> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   Uint8List? _photo; // to save byte why use Uint8List
+  int? selectedId;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +47,10 @@ class _AddBottomSheetState extends State<AddBottomSheet> {
       context,
     ).extension<AppThemeTokens>()!;
     AuthorProvider authorProvider = Provider.of<AuthorProvider>(
+      context,
+      listen: false,
+    );
+    BookProvider bookProvider = Provider.of<BookProvider>(
       context,
       listen: false,
     );
@@ -95,7 +101,12 @@ class _AddBottomSheetState extends State<AddBottomSheet> {
             maxLines: 5,
           ),
 
-          if (widget.isBookSeet) AuthorDropdown(),
+          if (widget.isBookSheet)
+            AuthorDropdown(
+              onAuthorSelected: (id) {
+                selectedId = id;
+              },
+            ),
 
           SizedBox(height: 16.0),
           Text(
@@ -130,47 +141,22 @@ class _AddBottomSheetState extends State<AddBottomSheet> {
           if (_photo != null) SizedBox(height: 8.0),
 
           InkWell(
-            onTap: () async {
-              String name = _nameController.text.trim();
-              String desc = _descriptionController.text.trim();
-              if (name.isNotEmpty && desc.isNotEmpty) {
-                int result = await authorProvider.saveAuthor(
-                  name: name,
-                  description: desc,
-                  photo: _photo,
-                );
-
-                if (result > 0 && context.mounted) {
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      backgroundColor: Colors.green,
-                      content: Text("Save Successfully"),
-                    ),
-                  );
-                }
-              } else {
-                showDialog(
-                  context: context,
-                  builder: (_) {
-                    return AlertDialog(
-                      title: Text("Data not complete"),
-                      content: Text(
-                        "Please enter name and description correctly",
-                      ),
-                      actions: [
-                        FilledButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text("OK"),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              }
-            },
+            onTap: () => widget.isBookSheet
+                ? addBook(
+                    context: context,
+                    nameController: _nameController,
+                    descriptionController: _descriptionController,
+                    photo: _photo,
+                    bookProvider: bookProvider,
+                    authorId: selectedId!,
+                  )
+                : addAuthor(
+                    context: context,
+                    nameController: _nameController,
+                    descriptionController: _descriptionController,
+                    authorProvider: authorProvider,
+                    photo: _photo,
+                  ),
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 16),
               alignment: Alignment.center,
@@ -193,6 +179,100 @@ class _AddBottomSheetState extends State<AddBottomSheet> {
           ),
         ],
       ),
+    );
+  }
+}
+
+void addBook({
+  required BuildContext context,
+  required TextEditingController nameController,
+  required TextEditingController descriptionController,
+  required BookProvider bookProvider,
+  required Uint8List? photo,
+  required int authorId,
+}) async {
+  String name = nameController.text.trim();
+  String desc = descriptionController.text.trim();
+  if (name.isNotEmpty && desc.isNotEmpty) {
+    int result = await bookProvider.saveBook(
+      title: name,
+      description: desc,
+      cover: photo,
+      authorId: authorId,
+    );
+
+    if (result > 0 && context.mounted) {
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.green,
+          content: Text("Save Successfully"),
+        ),
+      );
+    }
+  } else {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          title: Text("Data not complete"),
+          content: Text("Please enter name and description correctly"),
+          actions: [
+            FilledButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+void addAuthor({
+  required BuildContext context,
+  required TextEditingController nameController,
+  required TextEditingController descriptionController,
+  required AuthorProvider authorProvider,
+  required Uint8List? photo,
+}) async {
+  String name = nameController.text.trim();
+  String desc = descriptionController.text.trim();
+  if (name.isNotEmpty && desc.isNotEmpty) {
+    int result = await authorProvider.saveAuthor(
+      name: name,
+      description: desc,
+      photo: photo,
+    );
+
+    if (result > 0 && context.mounted) {
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.green,
+          content: Text("Save Successfully"),
+        ),
+      );
+    }
+  } else {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          title: Text("Data not complete"),
+          content: Text("Please enter name and description correctly"),
+          actions: [
+            FilledButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("OK"),
+            ),
+          ],
+        );
+      },
     );
   }
 }
