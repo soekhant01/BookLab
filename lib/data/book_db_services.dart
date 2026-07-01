@@ -42,4 +42,21 @@ foreign key(author_id) references author(id) on delete restrict
       return BookModel.fromJson(json);
     }).toList();
   }
+
+  Future<int> getFavorite(int id) async {
+    final favMap = await _database.rawQuery(
+      ""
+      "select fav from books where id = $id",
+    );
+    if (favMap.isNotEmpty) {
+      return (favMap.first["fav"] as int);
+    }
+    return 0;
+  }
+
+  Future<int> updateFavorite(int id, int isFav) async {
+    return _database.rawUpdate(
+      "update $_bookTable set fav=$isFav where id=$id",
+    );
+  }
 }

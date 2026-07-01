@@ -2,7 +2,9 @@ import 'dart:typed_data';
 
 import 'package:book_lab/const/theme/app_theme_tokens.dart';
 import 'package:book_lab/data/model/book_model.dart';
+import 'package:book_lab/provider/book_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class BookDetailScreen extends StatefulWidget {
   const BookDetailScreen({super.key, required this.bookData});
@@ -14,6 +16,15 @@ class BookDetailScreen extends StatefulWidget {
 }
 
 class _BookDetailScreenState extends State<BookDetailScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      Provider.of<BookProvider>(context).getFavorite(widget.bookData.id!);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     AppThemeTokens themeTokens = Theme.of(context).extension<AppThemeTokens>()!;
@@ -65,9 +76,21 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
                 color: themeTokens.backBtnBg,
                 borderRadius: BorderRadius.circular(24),
               ),
-              child: IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.favorite_border),
+              child: Consumer<BookProvider>(
+                builder: (BuildContext context, provider, Widget? child) {
+                  bool isFav = provider.isFav == 1;
+                  return IconButton(
+                    onPressed: () {
+                      provider.updateFavorite(
+                        widget.bookData.id!,
+                        isFav ? 0 : 1,
+                      );
+                    },
+                    icon: isFav
+                        ? Icon(Icons.favorite)
+                        : Icon(Icons.favorite_border),
+                  );
+                },
               ),
             ),
           ),

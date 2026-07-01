@@ -1,6 +1,6 @@
 class BookModel {
   BookModel({
-    num? id,
+    int? id,
     String? title,
     String? description,
     dynamic cover,
@@ -27,7 +27,7 @@ class BookModel {
     _name = json['name'];
   }
 
-  num? _id;
+  int? _id;
   String? _title;
   String? _description;
   dynamic _cover;
@@ -36,7 +36,7 @@ class BookModel {
   String? _name;
 
   BookModel copyWith({
-    num? id,
+    int? id,
     String? title,
     String? description,
     dynamic cover,
@@ -53,7 +53,7 @@ class BookModel {
     name: name ?? _name,
   );
 
-  num? get id => _id;
+  int? get id => _id;
 
   String? get title => _title;
 
