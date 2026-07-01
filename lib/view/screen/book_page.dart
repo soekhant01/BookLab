@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:book_lab/const/theme/app_theme_tokens.dart';
 import 'package:book_lab/data/model/book_model.dart';
 import 'package:book_lab/provider/book_provider.dart';
+import 'package:book_lab/view/screen/book_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -48,7 +49,16 @@ class _BookPageState extends State<BookPage> {
                     String? title = book.title;
                     String? name = book.name;
                     return InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) {
+                              return BookDetailScreen(bookData: book);
+                            },
+                          ),
+                        );
+                      },
                       child: Container(
                         padding: EdgeInsets.all(16),
                         margin: EdgeInsets.only(
