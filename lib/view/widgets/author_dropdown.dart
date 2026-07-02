@@ -4,15 +4,29 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AuthorDropdown extends StatefulWidget {
-  const AuthorDropdown({super.key, required this.onAuthorSelected});
+  const AuthorDropdown({
+    super.key,
+    required this.onAuthorSelected,
+    this.initialId,
+  });
 
   final Function(int) onAuthorSelected;
+  final int? initialId;
 
   @override
   State<AuthorDropdown> createState() => _AuthorDropdownState();
 }
 
 class _AuthorDropdownState extends State<AuthorDropdown> {
+  int? selectedId;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    selectedId = widget.initialId;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<AuthorProvider>(
@@ -29,7 +43,8 @@ class _AuthorDropdownState extends State<AuthorDropdown> {
               );
             }).toList(),
             label: const Text("Select Author"),
-            onSelected: (value) {
+            initialSelection: widget.initialId,
+            onSelected: (int? value) {
               setState(() {
                 widget.onAuthorSelected(value!);
               });

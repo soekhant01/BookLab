@@ -5,7 +5,7 @@ class BookModel {
     String? description,
     dynamic cover,
     dynamic fav,
-    num? authorId,
+    int? authorId,
     String? name,
   }) {
     _id = id;
@@ -32,7 +32,7 @@ class BookModel {
   String? _description;
   dynamic _cover;
   dynamic _fav;
-  num? _authorId;
+  int? _authorId;
   String? _name;
 
   BookModel copyWith({
@@ -41,7 +41,7 @@ class BookModel {
     String? description,
     dynamic cover,
     dynamic fav,
-    num? authorId,
+    int? authorId,
     String? name,
   }) => BookModel(
     id: id ?? _id,
@@ -63,7 +63,7 @@ class BookModel {
 
   dynamic get fav => _fav;
 
-  num? get authorId => _authorId;
+  int? get authorId => _authorId;
 
   String? get name => _name;
 

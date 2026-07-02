@@ -63,4 +63,18 @@ foreign key(author_id) references author(id) on delete restrict
   Future<int> deleteBook(int id) {
     return _database.rawDelete("delete from $_bookTable where id=$id");
   }
+
+  Future<int> updateBook({
+    required int id,
+    required String title,
+    required String description,
+    required int authorId,
+  }) {
+    return _database.update(
+      _bookTable,
+      {"title": title, "description": description, "author_id": authorId},
+      where: "id=?",
+      whereArgs: [id],
+    );
+  }
 }

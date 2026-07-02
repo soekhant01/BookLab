@@ -4,7 +4,7 @@ import 'package:book_lab/data/model/author_model.dart';
 import 'package:book_lab/provider/author_provider.dart';
 import 'package:book_lab/view/screen/author_detail_screen.dart';
 import 'package:book_lab/view/widgets/delete_confirm_dialog.dart';
-import 'package:book_lab/view/widgets/update_author_bottom_sheet.dart';
+import 'package:book_lab/view/widgets/update_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -121,10 +121,15 @@ class _AuthorPageState extends State<AuthorPage> {
                                       isScrollControlled: true,
                                       context: context,
                                       builder: (context) {
-                                        return UpdateAuthorBottomSheet(
-                                          currentAuthorName: name,
+                                        return UpdateBottomSheet(
+                                          currentName: name,
                                           currentDescription: description,
-                                          currentAuthorId: author.id,
+                                          currentId: author.id,
+                                          isBookEdit: false,
+                                          recordTitle: 'Update Author Record',
+                                          firstInputText: 'Author Name',
+                                          firstHintText: 'Enter Author Name',
+                                          buttonText: 'Update Author',
                                         );
                                       },
                                     );

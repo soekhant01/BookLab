@@ -45,4 +45,22 @@ class BookProvider extends ChangeNotifier {
     getAllBooks();
     return result;
   }
+
+  Future<int> updateBook({
+    required int id,
+    required String title,
+    required String description,
+    required int authorId,
+  }) async {
+    int result = await _bookDbServices.updateBook(
+      id: id,
+      title: title,
+      description: description,
+      authorId: authorId,
+    );
+
+    getAllBooks();
+
+    return result;
+  }
 }

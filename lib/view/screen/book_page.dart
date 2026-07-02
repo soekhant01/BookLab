@@ -5,6 +5,7 @@ import 'package:book_lab/data/model/book_model.dart';
 import 'package:book_lab/provider/book_provider.dart';
 import 'package:book_lab/view/screen/book_detail_screen.dart';
 import 'package:book_lab/view/widgets/delete_confirm_dialog.dart';
+import 'package:book_lab/view/widgets/update_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -49,6 +50,9 @@ class _BookPageState extends State<BookPage> {
                     Uint8List? cover = book.cover;
                     String? title = book.title;
                     String? name = book.name;
+                    String? description = book.description;
+                    int? authorId = book.authorId;
+                    print("author Id : $authorId");
                     return InkWell(
                       onTap: () {
                         Navigator.push(
@@ -119,7 +123,25 @@ class _BookPageState extends State<BookPage> {
                             Column(
                               children: [
                                 IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    showModalBottomSheet(
+                                      isScrollControlled: true,
+                                      context: context,
+                                      builder: (context) {
+                                        return UpdateBottomSheet(
+                                          currentName: title!,
+                                          currentDescription: description!,
+                                          currentId: book.id!,
+                                          currentAuthorId: authorId,
+                                          isBookEdit: true,
+                                          recordTitle: 'Update Book Record',
+                                          firstInputText: 'Book Title',
+                                          firstHintText: 'Enter Book Title',
+                                          buttonText: 'Update Book',
+                                        );
+                                      },
+                                    );
+                                  },
                                   icon: Icon(Icons.edit),
                                 ),
                                 IconButton(
