@@ -59,4 +59,8 @@ foreign key(author_id) references author(id) on delete restrict
       "update $_bookTable set fav=$isFav where id=$id",
     );
   }
+
+  Future<int> deleteBook(int id) {
+    return _database.rawDelete("delete from $_bookTable where id=$id");
+  }
 }

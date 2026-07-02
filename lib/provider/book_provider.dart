@@ -39,4 +39,10 @@ class BookProvider extends ChangeNotifier {
     getFavorite(id);
     return result;
   }
+
+  Future<int> deleteBook(int id) async {
+    int result = await _bookDbServices.deleteBook(id);
+    getAllBooks();
+    return result;
+  }
 }

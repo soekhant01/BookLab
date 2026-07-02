@@ -4,6 +4,7 @@ import 'package:book_lab/const/theme/app_theme_tokens.dart';
 import 'package:book_lab/data/model/book_model.dart';
 import 'package:book_lab/provider/book_provider.dart';
 import 'package:book_lab/view/screen/book_detail_screen.dart';
+import 'package:book_lab/view/widgets/delete_confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -122,7 +123,21 @@ class _BookPageState extends State<BookPage> {
                                   icon: Icon(Icons.edit),
                                 ),
                                 IconButton(
-                                  onPressed: () {},
+                                  onPressed: () async {
+                                    bool isDelete = await showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return DeleteConfirmDialog(
+                                          title: "Delete Book",
+                                          content:
+                                              "Are you sure to delete ${book.title}",
+                                        );
+                                      },
+                                    );
+                                    if (isDelete & context.mounted) {
+                                      provider.deleteBook(book.id!);
+                                    }
+                                  },
                                   icon: Icon(Icons.delete),
                                 ),
                               ],
